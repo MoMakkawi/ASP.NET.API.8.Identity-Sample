@@ -4,3 +4,12 @@ GET {{ASP.NET._8.Identity_HostAddress}}/weatherforecast/
 Accept: application/json
 
 ###
+
+POST
+
+{
+  "fullName": "lklklkllk",
+  "locationText": "lklklkllk",
+  "password": "asdasdASDASD!@#123",
+  "email": "asdasd@sad.com"
+}

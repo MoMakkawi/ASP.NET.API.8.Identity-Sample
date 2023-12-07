@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ASP.NET._8.Identity.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20231207130131_Init")]
+    [Migration("20231207142346_Init")]
     partial class Init
     {
         /// <inheritdoc />
@@ -48,6 +48,10 @@ namespace ASP.NET._8.Identity.Migrations
 
                     b.Property<bool>("EmailConfirmed")
                         .HasColumnType("bit");
+
+                    b.Property<string>("FullName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("IsActive")
                         .HasColumnType("bit");
