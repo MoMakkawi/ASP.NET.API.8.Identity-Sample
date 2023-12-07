@@ -17,6 +17,20 @@ public class AppDbContext : IdentityDbContext<ApplicationUser>
 
     protected override void OnModelCreating(ModelBuilder builder)
     { 
+<<<<<<<<< Temporary merge branch 1
+        //builder.Entity<Consumer>()
+        //    .HasOne(e => e.ApplicationUser)
+        //    .WithOne()
+        //    .HasForeignKey<ApplicationUser>()
+        //    .IsRequired();
+
+        //builder.Entity<Provider>()
+        //    .HasMany(e => e.ApplicationUsers)
+        //    .WithOne()
+        //    .IsRequired();
+=========
+>>>>>>>>> Temporary merge branch 2
+
         base.OnModelCreating(builder);
     }
 
