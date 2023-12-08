@@ -1,47 +1,47 @@
 ﻿using ASP.NET8.Identity.Models.Helpers;
 
 using Demo.API.Identity;
+
 using FastEndpoints;
 
 
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
-namespace ASP.NET8.Identity.EndPoints.UserManagement.Register;
+namespace ASP.NET8.Identity.EndPoints.UserManagement.ConsumerRegister;
 
-public sealed class ConsumerRegisterEndPoint : Endpoint<RegisterModel, Result<RegisterResponse>>
+public sealed class ConsumerRegisterEndPoint : Endpoint<ConsumerRegisterModel, Result<ConsumerRegisterResponse>>
 {
     public UserManager<ApplicationUser> UserManager { get; set; } = default!;
-    public readonly string registerRoute = "api/v1/register";
+    public readonly string consumerRegisterRoute = $"api/v1/register/{Identity.Role.Consumer}";
     public override void Configure()
     {
-        Post(registerRoute);
+        Post(consumerRegisterRoute);
         AllowAnonymous();
     }
-
-    public override async Task HandleAsync(RegisterModel model, CancellationToken ct)
+    public override async Task HandleAsync(ConsumerRegisterModel model, CancellationToken ct)
     {
         ApplicationUser appUser = MapToApplicationUser(model);
 
         IdentityResult identityResult = await UserManager.CreateAsync(appUser, model.Password);
- 
-        Result<RegisterResponse> registerResponse;
+
+        Result<ConsumerRegisterResponse> registerResponse;
 
         if (!identityResult.Succeeded)
-            registerResponse = Result<RegisterResponse>.Fail(identityResult.Errors);
-        
+            registerResponse = Result<ConsumerRegisterResponse>.Fail(identityResult.Errors);
+
         else
         {
             appUser = await GetUserByEmailAsync(model.Email, ct);
 
-            var response = new RegisterResponse(Guid.Parse(appUser.Id));
-            registerResponse = Result<RegisterResponse>.Success(response);
+            var response = new ConsumerRegisterResponse(Guid.Parse(appUser.Id));
+            registerResponse = Result<ConsumerRegisterResponse>.Success(response);
         }
 
         await SendAsync(registerResponse, cancellation: ct);
     }
 
-    private ApplicationUser MapToApplicationUser(RegisterModel model)
+    private ApplicationUser MapToApplicationUser(ConsumerRegisterModel model)
     {
         return new ApplicationUser
         {
@@ -52,7 +52,7 @@ public sealed class ConsumerRegisterEndPoint : Endpoint<RegisterModel, Result<Re
         };
     }
 
-    private async Task<ApplicationUser> GetUserByEmailAsync(string email, CancellationToken ct) 
+    private async Task<ApplicationUser> GetUserByEmailAsync(string email, CancellationToken ct)
         => await UserManager.Users
             .FirstAsync(u => u.Email == email, cancellationToken: ct);
 

@@ -4,11 +4,11 @@ using FastEndpoints;
 
 using FluentValidation;
 
-namespace ASP.NET8.Identity.EndPoints.UserManagement.Register;
+namespace ASP.NET8.Identity.EndPoints.UserManagement.ConsumerRegister;
 
-public sealed class RegisterRetrievalValidator : Validator<RegisterModel>
+public sealed class ConsumerRegisterRetrievalValidator : Validator<ConsumerRegisterModel>
 {
-    public RegisterRetrievalValidator()
+    public ConsumerRegisterRetrievalValidator()
     {
         RuleFor(x => x.Password)
             .NotNull().WithMessage("Password is null!")

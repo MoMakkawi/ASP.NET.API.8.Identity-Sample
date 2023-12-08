@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ASP.NET._8.Identity.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20231207142346_Init")]
+    [Migration("20231209072551_Init")]
     partial class Init
     {
         /// <inheritdoc />
@@ -82,6 +82,10 @@ namespace ASP.NET._8.Identity.Migrations
 
                     b.Property<bool>("PhoneNumberConfirmed")
                         .HasColumnType("bit");
+
+                    b.Property<string>("Role")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("SecurityStamp")
                         .HasColumnType("nvarchar(max)");
