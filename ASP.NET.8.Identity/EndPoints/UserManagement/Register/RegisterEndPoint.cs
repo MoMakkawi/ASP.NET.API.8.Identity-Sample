@@ -12,7 +12,7 @@ namespace ASP.NET8.Identity.EndPoints.UserManagement.Register;
 public sealed class ConsumerRegisterEndPoint : Endpoint<RegisterModel, Result<RegisterResponse>>
 {
     public UserManager<ApplicationUser> UserManager { get; set; } = default!;
-    public readonly string registerRoute = "api/v1/register";
+    public const string registerRoute = "api/v1/register";
     public override void Configure()
     {
         Post(registerRoute);
