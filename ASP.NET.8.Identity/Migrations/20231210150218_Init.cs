@@ -45,7 +45,7 @@ namespace ASP.NET._8.Identity.Migrations
                     TradeLicenseNumber = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     TradeExpDate = table.Column<DateOnly>(type: "date", nullable: true),
                     Type = table.Column<int>(type: "int", nullable: true),
-                    CreatorId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    SupApprovalId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
                     UserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     NormalizedUserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     Email = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),

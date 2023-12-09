@@ -1,10 +1,11 @@
 using ASP.NET8.Identity.Data;
-using Demo.API.Identity;
+using ASP.NET8.Identity.Identity;
 
 using FastEndpoints;
 
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -29,6 +30,16 @@ builder.Services
     .AddEntityFrameworkStores<AppDbContext>();
 
 var app = builder.Build();
+
+#region Seeding Roles
+using (var scope = app.Services.CreateScope())
+{
+    var dbContext = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+    await Role.SeedRoles(dbContext);
+    // use context
+}
+
+#endregion
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

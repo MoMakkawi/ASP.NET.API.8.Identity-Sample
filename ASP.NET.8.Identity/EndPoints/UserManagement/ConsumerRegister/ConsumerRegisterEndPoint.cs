@@ -1,13 +1,11 @@
 ﻿using ASP.NET8.Identity.Data;
+using ASP.NET8.Identity.Identity;
 using ASP.NET8.Identity.Models.Helpers;
-
-using Demo.API.Identity;
 
 using FastEndpoints;
 
 
 using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
 
 namespace ASP.NET8.Identity.EndPoints.UserManagement.ConsumerRegister;
 
@@ -25,44 +23,23 @@ public sealed class ConsumerRegisterEndPoint(AppDbContext dbContext)
     }
     public override async Task HandleAsync(ConsumerRegisterModel model, CancellationToken ct)
     {
-        Consumer consumer = MapToConsumer(model);
+        var mapper = new ConsumerRegisterMapper();
 
-        IdentityResult identityResult = await UserManager.CreateAsync(consumer, model.Password);
+        Consumer consumer = mapper.Map(model);
 
-        Result<ConsumerRegisterResponse> registerResponse;
+        var registerResponse = await ConsumerRegisterHelpers
+            .CreateConsumerAsync(consumer,
+                                 model.Password,
+                                 model.Email);
 
-        if (!identityResult.Succeeded)
-            registerResponse = Result<ConsumerRegisterResponse>.Fail(identityResult.Errors);
+        registerResponse = await ConsumerRegisterHelpers
+            .AssignConsumerRole(consumer,
+                                 model.Email);
 
-        else
-        {
-            consumer = await GetUserByEmailAsync(model.Email, ct);
-
-            var response = new ConsumerRegisterResponse(Guid.Parse(consumer.Id));
-            registerResponse = Result<ConsumerRegisterResponse>.Success(response);
-        }
 
         await SendAsync(registerResponse, cancellation: ct);
     }
 
-    private Consumer MapToConsumer(ConsumerRegisterModel model)
-    {
-        return new Consumer
-        {
-            Email = model.Email,
-            UserName = model.Email,
-            FullName = model.FullName,
-            LocationText = model.LocationText,
-            Nationality = model.Nationality,
-            CardNumber = model.CardNumber,
-            CardExpDate = model.CardExpDate,
-            Role = Identity.Role.Consumer
 
-        };
-    }
-
-    private async Task<Consumer> GetUserByEmailAsync(string email, CancellationToken ct)
-        => await _dbContext.Consumers
-            .FirstAsync(u => u.Email == email, cancellationToken: ct);
 
 }

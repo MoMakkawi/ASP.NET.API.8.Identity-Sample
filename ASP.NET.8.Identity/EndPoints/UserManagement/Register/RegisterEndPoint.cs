@@ -1,6 +1,6 @@
-﻿using ASP.NET8.Identity.Models.Helpers;
+﻿using ASP.NET8.Identity.Identity;
+using ASP.NET8.Identity.Models.Helpers;
 
-using Demo.API.Identity;
 using FastEndpoints;
 
 

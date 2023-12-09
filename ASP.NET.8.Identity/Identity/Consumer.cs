@@ -1,4 +1,4 @@
-﻿namespace Demo.API.Identity;
+﻿namespace ASP.NET8.Identity.Identity;
 
 public class Consumer : ApplicationUser
 {

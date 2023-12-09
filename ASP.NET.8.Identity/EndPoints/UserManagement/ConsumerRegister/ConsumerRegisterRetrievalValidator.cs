@@ -1,6 +1,4 @@
-﻿using System.Text.RegularExpressions;
-
-using FastEndpoints;
+﻿using FastEndpoints;
 
 using FluentValidation;
 
@@ -13,7 +11,7 @@ public sealed class ConsumerRegisterRetrievalValidator : Validator<ConsumerRegis
         RuleFor(x => x.Password)
             .NotNull().WithMessage("Password is null!")
             .NotEmpty().WithMessage("Password is required!")
-            .Must(HasValidPassword)
+            .Must(ConsumerRegisterHelpers.HasValidPassword)
             .WithMessage("The password must contain symbols, numbers, uppercase and lowercase letters");
 
         RuleFor(x => x.Email)
@@ -41,21 +39,9 @@ public sealed class ConsumerRegisterRetrievalValidator : Validator<ConsumerRegis
         RuleFor(x => x.CardExpDate)
            .NotNull().WithMessage("Card Exp Date is required!")
            .NotEmpty().WithMessage("Card Exp Date is empty!")
-           .LessThan(x => DateOnly.FromDateTime(DateTime.UtcNow))
+           .GreaterThan(x => DateOnly.FromDateTime(DateTime.UtcNow))
            .WithMessage("Sorry, The card is expired!");
     }
 
-    private bool HasValidPassword(string? pw)
-    {
-        Regex lowercase = new("[a-z]+");
-        Regex uppercase = new("[A-Z]+");
-        Regex digit = new("(\\d)+");
-        Regex symbol = new("(\\W)+");
 
-        return pw is not null &&
-            lowercase.IsMatch(pw) &&
-            uppercase.IsMatch(pw) &&
-            digit.IsMatch(pw) &&
-            symbol.IsMatch(pw);
-    }
 }

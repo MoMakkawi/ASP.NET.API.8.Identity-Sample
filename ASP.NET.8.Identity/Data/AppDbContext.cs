@@ -1,19 +1,15 @@
-﻿using Demo.API.Identity;
+﻿using ASP.NET8.Identity.Identity;
 
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace ASP.NET8.Identity.Data;
 
-public class AppDbContext : IdentityDbContext<ApplicationUser>
+public class AppDbContext(DbContextOptions<AppDbContext> options) 
+    : IdentityDbContext<ApplicationUser>(options)
 {
     public DbSet<Consumer> Consumers { get; set; }
     public DbSet<Provider> Providers { get; set; }
-
-    public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
-    {
-
-    }
 
     protected override void OnModelCreating(ModelBuilder builder)
     { 

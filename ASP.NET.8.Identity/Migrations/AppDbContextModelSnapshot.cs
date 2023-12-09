@@ -22,7 +22,7 @@ namespace ASP.NET._8.Identity.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("Demo.API.Identity.ApplicationUser", b =>
+            modelBuilder.Entity("ASP.NET8.Identity.Identity.ApplicationUser", b =>
                 {
                     b.Property<string>("Id")
                         .HasColumnType("nvarchar(450)");
@@ -244,9 +244,9 @@ namespace ASP.NET._8.Identity.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("Demo.API.Identity.Consumer", b =>
+            modelBuilder.Entity("ASP.NET8.Identity.Identity.Consumer", b =>
                 {
-                    b.HasBaseType("Demo.API.Identity.ApplicationUser");
+                    b.HasBaseType("ASP.NET8.Identity.Identity.ApplicationUser");
 
                     b.Property<DateOnly>("CardExpDate")
                         .HasColumnType("date");
@@ -262,9 +262,9 @@ namespace ASP.NET._8.Identity.Migrations
                     b.HasDiscriminator().HasValue("Consumer");
                 });
 
-            modelBuilder.Entity("Demo.API.Identity.Provider", b =>
+            modelBuilder.Entity("ASP.NET8.Identity.Identity.Provider", b =>
                 {
-                    b.HasBaseType("Demo.API.Identity.ApplicationUser");
+                    b.HasBaseType("ASP.NET8.Identity.Identity.ApplicationUser");
 
                     b.Property<string>("BankName")
                         .IsRequired()
@@ -274,12 +274,12 @@ namespace ASP.NET._8.Identity.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<Guid>("CreatorId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.Property<string>("IBAN")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid>("SupApprovalId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("SwiftCode")
                         .IsRequired()
@@ -309,7 +309,7 @@ namespace ASP.NET._8.Identity.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
                 {
-                    b.HasOne("Demo.API.Identity.ApplicationUser", null)
+                    b.HasOne("ASP.NET8.Identity.Identity.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -318,7 +318,7 @@ namespace ASP.NET._8.Identity.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
                 {
-                    b.HasOne("Demo.API.Identity.ApplicationUser", null)
+                    b.HasOne("ASP.NET8.Identity.Identity.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -333,7 +333,7 @@ namespace ASP.NET._8.Identity.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Demo.API.Identity.ApplicationUser", null)
+                    b.HasOne("ASP.NET8.Identity.Identity.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -342,7 +342,7 @@ namespace ASP.NET._8.Identity.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
                 {
-                    b.HasOne("Demo.API.Identity.ApplicationUser", null)
+                    b.HasOne("ASP.NET8.Identity.Identity.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)

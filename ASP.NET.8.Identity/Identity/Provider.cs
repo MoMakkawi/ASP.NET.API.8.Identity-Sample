@@ -1,4 +1,4 @@
-﻿namespace Demo.API.Identity;
+﻿namespace ASP.NET8.Identity.Identity;
 
 public class Provider : ApplicationUser
 {
@@ -9,6 +9,6 @@ public class Provider : ApplicationUser
     public required string TradeLicenseNumber { get; set; }
     public required DateOnly TradeExpDate { get; set; }
     public required ProviderType Type { get; set; }
-    public required Guid CreatorId { get; set; } = Guid.Empty;
+    public required Guid SupApprovalId { get; set; }
 
 }
