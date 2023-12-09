@@ -4,4 +4,7 @@ public sealed record ConsumerRegisterModel(
     string FullName,
     string LocationText,
     string Password,
-    string Email);
+    string Email,
+    string Nationality,
+    string CardNumber,
+    DateOnly CardExpDate);

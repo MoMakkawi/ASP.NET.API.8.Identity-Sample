@@ -24,7 +24,8 @@ builder.Services.AddAuthentication(IdentityConstants.ApplicationScheme);
 
 builder.Services.AddAuthorizationBuilder();
 
-builder.Services.AddIdentityApiEndpoints<ApplicationUser>()
+builder.Services
+    .AddIdentityApiEndpoints<ApplicationUser>()
     .AddEntityFrameworkStores<AppDbContext>();
 
 var app = builder.Build();
