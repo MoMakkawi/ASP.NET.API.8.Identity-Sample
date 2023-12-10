@@ -26,19 +26,18 @@ builder.Services.AddAuthentication(IdentityConstants.ApplicationScheme);
 builder.Services.AddAuthorizationBuilder();
 
 builder.Services
-    .AddIdentityApiEndpoints<ApplicationUser>()
+    .AddIdentity<ApplicationUser, IdentityRole>()
     .AddEntityFrameworkStores<AppDbContext>();
+
+//builder.Services
+//    .AddIdentityApiEndpoints<ApplicationUser>();
 
 var app = builder.Build();
 
 #region Seeding Roles
-using (var scope = app.Services.CreateScope())
-{
-    var dbContext = scope.ServiceProvider.GetRequiredService<AppDbContext>();
-    await Role.SeedRoles(dbContext);
-    // use context
-}
-
+using var scope = app.Services.CreateScope();
+var dbContext = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+await Role.SeedRoles(dbContext);
 #endregion
 
 // Configure the HTTP request pipeline.

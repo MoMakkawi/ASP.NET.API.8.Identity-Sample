@@ -9,9 +9,11 @@ using Microsoft.EntityFrameworkCore;
 
 namespace ASP.NET8.Identity.EndPoints.UserManagement.Register;
 
-public sealed class ConsumerRegisterEndPoint : Endpoint<RegisterModel, Result<RegisterResponse>>
+public sealed class ConsumerRegisterEndPoint (UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager)
+    : Endpoint<RegisterModel, Result<RegisterResponse>>
 {
-    public UserManager<ApplicationUser> UserManager { get; set; } = default!;
+    private readonly UserManager<ApplicationUser> userManager = userManager;
+    private readonly RoleManager<IdentityRole> roleManager = roleManager;
     public const string registerRoute = "api/v1/register";
     public override void Configure()
     {
@@ -23,16 +25,17 @@ public sealed class ConsumerRegisterEndPoint : Endpoint<RegisterModel, Result<Re
     {
         ApplicationUser appUser = MapToApplicationUser(model);
 
-        IdentityResult identityResult = await UserManager.CreateAsync(appUser, model.Password);
+        IdentityResult identityResult = await userManager.CreateAsync(appUser, model.Password);
  
         Result<RegisterResponse> registerResponse;
 
         if (!identityResult.Succeeded)
             registerResponse = Result<RegisterResponse>.Fail(identityResult.Errors);
-        
         else
         {
             appUser = await GetUserByEmailAsync(model.Email, ct);
+
+            identityResult = await userManager.AddToRoleAsync(appUser, Role.Provider);
 
             var response = new RegisterResponse(Guid.Parse(appUser.Id));
             registerResponse = Result<RegisterResponse>.Success(response);
@@ -48,12 +51,13 @@ public sealed class ConsumerRegisterEndPoint : Endpoint<RegisterModel, Result<Re
             Email = model.Email,
             UserName = model.Email,
             FullName = model.FullName,
-            LocationText = model.LocationText
+            LocationText = model.LocationText,
+            Role = model.Role,
         };
     }
 
     private async Task<ApplicationUser> GetUserByEmailAsync(string email, CancellationToken ct) 
-        => await UserManager.Users
+        => await userManager.Users
             .FirstAsync(u => u.Email == email, cancellationToken: ct);
 
 }
